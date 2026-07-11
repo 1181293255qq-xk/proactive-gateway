@@ -499,7 +499,7 @@ class HostFixMiddleware:
         user_name = os.environ.get("USER_NAME", "用户")
         user_id = os.environ.get("USER_ID", "default")
         chat_tag = os.environ.get("CHAT_TAG", "Web_Chat")
-        now_str = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S")
+        now_str = (datetime.datetime.utcnow() + datetime.timedelta(hours=8)).strftime("%Y-%m-%dT%H:%M:%S+08:00")
 
         final_save_text = ai_msg
         if reasoning:
