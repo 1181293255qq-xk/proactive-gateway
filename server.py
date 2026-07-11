@@ -311,6 +311,7 @@ def _save_memory_to_db(title: str, content: str, category: str = "流水", mood:
             "category": category,
             "mood": mood,
             "tags": tags,
+            "id": str(uuid.uuid4()),
             "importance": importance,
             "created_at": _get_now_bj().strftime("%Y-%m-%dT%H:%M:%S+08:00"),
         }
