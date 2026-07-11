@@ -516,6 +516,7 @@ class HostFixMiddleware:
                     "title": f"💬 {user_name}说",
                     "content": f"{user_name}：{user_msg[:2000]}",
                     "category": "流水",
+                    "id": str(uuid.uuid4()),
                     "mood": "平静",
                     "tags": chat_tag,
                     "created_at": now_str,
