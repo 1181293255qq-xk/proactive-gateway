@@ -528,6 +528,7 @@ class HostFixMiddleware:
                     "title": f"🤖 {ai_name}回复",
                     "content": f"我({ai_name})：{final_save_text[:2000]}",
                     "category": "流水",
+                    "id": str(uuid.uuid4()),
                     "mood": "温和",
                     "tags": chat_tag,
                     "created_at": now_str,
