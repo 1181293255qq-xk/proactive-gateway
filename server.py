@@ -312,7 +312,7 @@ def _save_memory_to_db(title: str, content: str, category: str = "流水", mood:
             "mood": mood,
             "tags": tags,
             "importance": importance,
-            "created_at": _get_now_bj().strftime("%Y-%m-%d %H:%M:%S"),
+            "created_at": _get_now_bj().strftime("%Y-%m-%dT%H:%M:%S+08:00"),
         }
         supabase.table("memories").insert(data).execute()
     except Exception as e:
@@ -992,7 +992,7 @@ async def manage_memory_house(action: str, room: str = "", activity: str = "", c
             "action_type": activity,
             "content": content or "",
             "is_locked": False,
-            "created_at": _get_now_bj().strftime("%Y-%m-%d %H:%M:%S"),
+            "created_at": _get_now_bj().strftime("%Y-%m-%dT%H:%M:%S+08:00"),
         }
         await asyncio.to_thread(lambda: supabase.table("memory_house").insert(data).execute())
         return f"✅ AI 在【{room}】开始{activity}了。"
