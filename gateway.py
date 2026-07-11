@@ -112,6 +112,29 @@ class HostFixMiddleware:
         # ---------- 健康检查 ----------
         if scope["path"] == "/health":
             await _send_json_resp(send, 200, {"status": "ok", "service": "generic-mcp-gateway"})
+
+        # ---------- 橘瓣主动消息轮询接口 ----------
+        if scope["path"] == "/api/proactive/poll":
+            sb = _get_supabase()
+            messages = []
+            if sb:
+                try:
+                    def _fetch_pending():
+                        return sb.table("memories").select("id, content").eq("tags", "Proactive_Pending").order("created_at").limit(3).execute()
+                    res = await asyncio.to_thread(_fetch_pending)
+                    if res and res.data:
+                        for m in res.data:
+                            content = str(m.get("content", ""))
+                            if content.startswith("主动发送: "):
+                                content = content[len("主动发送: "):]
+                            messages.append({"type": "text", "content": content})
+                        ids = [m["id"] for m in res.data]
+                        await asyncio.to_thread(lambda: sb.table("memories").update({"tags": "Proactive_Sent"}).in_("id", ids).execute())
+                        _log(f"📤 [轮询] 返回{len(messages)}条主动消息给橘瓣")
+                except Exception as e:
+                    _log(f"⚠️ poll查询失败: {e}")
+            await _send_json_resp(send, 200, {"messages": messages})
+            return
             return
 
         # ---------- 🆕 OpenAI 兼容代理 (/v1/*) ----------
