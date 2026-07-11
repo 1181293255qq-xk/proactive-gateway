@@ -79,7 +79,7 @@ async def async_autonomous_life():
                 await asyncio.to_thread(_push_wechat, ai_msg, "💌 主动问候")
                 await asyncio.to_thread(
                     _save_memory_to_db, "🤖 主动问候",
-                    f"主动发送: {ai_msg}", "流水", "主动", "Heartbeat"
+                    f"主动发送: {ai_msg}", "流水", "主动", "Proactive_Pending"
                 )
                 print(f"💓 [自主生命] 已发送主动问候: {ai_msg[:30]}...")
         except Exception as e:
